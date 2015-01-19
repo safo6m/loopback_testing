@@ -29,5 +29,9 @@
   "person": {
     "dataSource": "db",
     "public": true
+  },
+  "item": {
+    "dataSource": "db",
+    "public": true
   }
 }
