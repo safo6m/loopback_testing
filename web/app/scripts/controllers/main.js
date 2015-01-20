@@ -1,19 +1,26 @@
 'use strict';
 
 angular.module('testApp')
-  .controller('MainCtrl', ['$scope', 'api',
-    function ($scope, api) {
+  .controller('MainCtrl', ['$rootScope', '$scope', 'api',
+    function ($rootScope, $scope, api) {
 
-      $scope.onRegisterClick = function() {
-        api.registerUser().then(function(response) {
-          console.log('user registered', response);
+      $scope.items = [];
+      $scope.item = {};
+
+      $scope.createItem = function() {
+        api.createItem($rootScope.currentUser, $scope.item).then(function(response) {
+          console.log('item created:', response);
+          refreshItems();
         });
       };
 
-      $scope.onLoginClick = function() {
-        api.loginUser().then(function(response) {
-          console.log('user logged in', response);
+      var refreshItems = function() {
+        api.getAllUsersItems($rootScope.currentUser).then(function(response) {
+          console.log('item created:', response);
+          $scope.items = response.data;
         });
       };
+
+      refreshItems();
 
     }]);

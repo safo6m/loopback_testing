@@ -4,14 +4,7 @@
 angular.module('testApp')
   .service('api', ['$http', function ($http) {
     return {
-      registerUser: function() {
-        var data = {
-          firstname: 'mihael',
-          lastname: 'safo',
-          email: 'test@test.com',
-          password: '123'
-        };
-
+      registerUser: function(data) {
         return $http ({
           method: 'POST',
           url: 'http://0.0.0.0:3000/api/people',
@@ -30,12 +23,7 @@ angular.module('testApp')
         );
       },
 
-      loginUser: function() {
-        var data = {
-          email: 'test@test.com',
-          password: '123'
-        };
-
+      loginUser: function(data) {
         return $http ({
           method: 'POST',
           url: 'http://0.0.0.0:3000/api/people/login',
@@ -53,6 +41,51 @@ angular.module('testApp')
           }
         );
       },
+
+      getAllUsersItems: function(data) {
+        return $http ({
+          method: 'GET',
+          url: 'http://0.0.0.0:3000/api/people/' + data.userId + '/items',
+          params: {
+            access_token: data.id
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then(
+          function(result) {
+            return result;
+          }
+        ).catch(
+          function(error) {
+            return error;
+          }
+        );
+      },
+
+      createItem: function(user, data) {
+        return $http ({
+          method: 'POST',
+          url: 'http://0.0.0.0:3000/api/people/' + user.userId + '/items',
+          params: {
+            access_token: user.id
+          },
+          data: $.param({
+            name: data.name
+          }),
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then(
+          function(result) {
+            return result;
+          }
+        ).catch(
+          function(error) {
+            return error;
+          }
+        );
+      }
 
     };
   }]);
